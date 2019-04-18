@@ -5,3 +5,4 @@ flask==1.0.2
 gevent==1.4.0
 requests
 pillow
+tensorflow==1.13.1
