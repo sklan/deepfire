@@ -1,0 +1,7 @@
+keras==2.2.4
+markovify==0.7.1
+pronouncing==0.2.0
+flask==1.0.2
+gevent==1.4.0
+requests
+pillow
