@@ -9,8 +9,8 @@ from predict import generate_lyrics, compose_rap, vectors_into_song
 from preprocess import *
 
 path = '/Users/sklan/PyAiProjects/deepfire/data'
-# 'jcole'
-artists = ['kanye', 'eminem', 'tyler', 'snoop', 'asaprocky']
+
+artists = ['kanye', 'eminem', 'tyler', 'snoop', 'asaprocky', 'jcole']
 app = flask.Flask(__name__)
 
 models = dict()
@@ -45,7 +45,7 @@ def predict():
             vectors = compose_rap(initial_index, lyrics, rhymes_list,
                                   models[artist])
             rap = vectors_into_song(vectors, bars, rhymes_list)
-            data["predictions"] = ["\n".join(rap)]
+            data["predictions"] = "\n".join(rap)
             data["success"] = True
     return flask.jsonify(data)
 
