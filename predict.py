@@ -2,6 +2,7 @@ import os
 import random
 
 from keras.models import load_model
+
 from preprocess import *
 
 
@@ -30,14 +31,14 @@ def compose_rap(random_number, lyrics, rhymes_list, model):
     starting_input = []
     for line in initial_lines:
         starting_input.append([syllables(line), rhyme(line, rhymes_list)])
-
-    starting_vectors = model.predict(
-        np.array([starting_input]).flatten().reshape(4, 2, 2))
+    starting_input = np.reshape(starting_input, newshape=(4, 2, 2))
+    print(starting_input.shape)
+    starting_vectors = model.predict(starting_input)
     rap_vectors.append(starting_vectors)
 
     for i in range(49):
-        rap_vectors.append(model.predict(
-            np.array([rap_vectors[-1]]).flatten().reshape(4, 2, 2)))
+        rap_vector = np.reshape(rap_vectors[-1], newshape=(4, 2, 2))
+        rap_vectors.append(model.predict(rap_vector))
     return rap_vectors
 
 
@@ -114,6 +115,7 @@ def vectors_into_song(vectors, generated_lyrics, rhyme_list):
 def predict(path, artist):
     path = os.path.join(path, artist)
     model = load_model(os.path.join(path, 'model.h5'))
+    model.summary()
     with open(os.path.join(path, 'lyrics.txt'), mode='r') as f:
         text = f.read()
     lyrics = split_lyrics(text)
@@ -127,6 +129,7 @@ def predict(path, artist):
         for bar in rap:
             f.write(bar)
             f.write("\n")
+
 
 if __name__ == "__main__":
     predict('/Users/sklan/PyAiProjects/deepfire/data', 'kanye')

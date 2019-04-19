@@ -8,16 +8,20 @@ from keras.models import load_model
 from predict import generate_lyrics, compose_rap, vectors_into_song
 from preprocess import *
 
-
-def get_model(path):
-    model = load_model(os.path.join(path, 'model.h5'))
-    return model
-
-
 path = '/Users/sklan/PyAiProjects/deepfire/data'
-
-artists = ['kanye', 'eminem', 'tyler', 'snoop', 'asaprocky', 'jcole']
+# 'jcole'
+artists = ['kanye', 'eminem', 'tyler', 'snoop', 'asaprocky']
 app = flask.Flask(__name__)
+
+models = dict()
+
+
+def get_models(path):
+    for artist in artists:
+        p = os.path.join(path, artist)
+        models[artist] = load_model(os.path.join(p, 'model.h5'))
+        models[artist]._make_predict_function()
+    return models
 
 
 @app.route("/predict", methods=["GET", "POST"])
@@ -28,9 +32,9 @@ def predict():
         artist = request.args.get('artist')
 
         if artist in artists:
+            print(models[artist].summary())
             path = '/Users/sklan/PyAiProjects/deepfire/data'
             path = os.path.join(path, artist)
-            model = get_model(path)
             with open(os.path.join(path, 'lyrics.txt'), mode='r') as f:
                 text = f.read()
             lyrics = split_lyrics(text)
@@ -38,7 +42,8 @@ def predict():
             bars = generate_lyrics(text)
             with open(os.path.join(path, 'rhymes.txt'), mode='r') as f:
                 rhymes_list = f.read()
-            vectors = compose_rap(initial_index, lyrics, rhymes_list, model)
+            vectors = compose_rap(initial_index, lyrics, rhymes_list,
+                                  models[artist])
             rap = vectors_into_song(vectors, bars, rhymes_list)
             data["predictions"] = ["\n".join(rap)]
             data["success"] = True
@@ -48,5 +53,5 @@ def predict():
 if __name__ == "__main__":
     print(("* Loading Keras model and Flask starting server..."
            "please wait until server has fully started"))
-
+    get_models(path)
     app.run()
