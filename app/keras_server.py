@@ -6,8 +6,8 @@ import flask
 from flask import request
 from keras.models import load_model
 
-from predict import generate_lyrics, compose_rap, vectors_into_song
-from preprocess import *
+from scripts.predict import generate_lyrics, compose_rap, vectors_into_song
+from core.preprocess import *
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--data_path", type=str, help='Path to training data', default='data')

@@ -3,7 +3,7 @@ import random
 import argparse
 
 from keras.models import load_model
-from preprocess import *
+from core.preprocess import *
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--data_path", type=str, help='Path to training data')

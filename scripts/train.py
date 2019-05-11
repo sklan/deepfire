@@ -1,8 +1,8 @@
 import argparse
 import os
 
-from model import create_network
-from preprocess import *
+from core.model import create_network
+from core.preprocess import *
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--data_path", type=str, help='Path to training data',
