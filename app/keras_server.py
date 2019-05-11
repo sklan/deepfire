@@ -6,7 +6,7 @@ import flask
 from flask import request
 from keras.models import load_model
 
-from scripts.predict import generate_lyrics, compose_rap, vectors_into_song
+from predict import generate_lyrics, compose_rap, vectors_into_song
 from core.preprocess import *
 
 parser = argparse.ArgumentParser()
