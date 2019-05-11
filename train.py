@@ -1,8 +1,14 @@
 import os
+import argparse
 
 from model import create_network
 from preprocess import *
 
+parser = argparse.ArgumentParser()
+parser.add_argument("--data_path", type=str, help='Path to training data')
+parser.add_argument("--artist", type=str, help='Artist name')
+
+args = parser.parse_args()
 
 def train(path, artist, epochs=5, depth=4):
     path = os.path.join(path, artist)
@@ -19,4 +25,6 @@ def train(path, artist, epochs=5, depth=4):
 
 
 if __name__ == "__main__":
-    train('/Users/sklan/PyAiProjects/deepfire/data/', artist='kanye')
+    data_path = args.data_path
+    artist = args.artist
+    train(data_path, artist)
