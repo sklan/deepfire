@@ -118,7 +118,7 @@ def vectors_into_song(vectors, generated_lyrics, rhyme_list):
 
 
 def predict(path, artist):
-    #path = os.path.join(path, artist)
+    path = os.path.join(path, artist)
     model = load_model(os.path.join(path, 'model.h5'))
     with open(os.path.join(path, 'lyrics.txt'), mode='r') as f:
         text = f.read()
