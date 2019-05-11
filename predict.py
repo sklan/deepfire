@@ -11,6 +11,7 @@ parser.add_argument("--artist", type=str, help='Artist name')
 
 args = parser.parse_args()
 
+
 def generate_lyrics(text):
     bars = []
     last_words = []
@@ -133,6 +134,7 @@ def predict(path, artist):
         for bar in rap:
             f.write(bar)
             f.write("\n")
+
 
 if __name__ == "__main__":
     data_path = args.data_path

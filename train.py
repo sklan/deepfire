@@ -1,14 +1,16 @@
-import os
 import argparse
+import os
 
 from model import create_network
 from preprocess import *
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--data_path", type=str, help='Path to training data')
+parser.add_argument("--data_path", type=str, help='Path to training data',
+                    default='data')
 parser.add_argument("--artist", type=str, help='Artist name')
 
 args = parser.parse_args()
+
 
 def train(path, artist, epochs=5, depth=4):
     path = os.path.join(path, artist)

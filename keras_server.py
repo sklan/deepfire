@@ -1,3 +1,4 @@
+import argparse
 import os
 import random
 
@@ -8,7 +9,10 @@ from keras.models import load_model
 from predict import generate_lyrics, compose_rap, vectors_into_song
 from preprocess import *
 
-path = '/Users/sklan/PyAiProjects/deepfire/data'
+parser = argparse.ArgumentParser()
+parser.add_argument("--data_path", type=str, help='Path to training data', default='data')
+
+args = parser.parse_args()
 
 artists = ['kanye', 'eminem', 'tyler', 'snoop', 'asaprocky', 'jcole']
 app = flask.Flask(__name__)
@@ -24,16 +28,17 @@ def get_models(path):
     return models
 
 
-@app.route("/predict", methods=["GET", "POST"])
+@app.route("/predict", methods=["GET"])
 def predict():
     data = {"success": False}
     print(request.method)
+
     if request.method == "GET":
         artist = request.args.get('artist')
 
         if artist in artists:
             print(models[artist].summary())
-            path = '/Users/sklan/PyAiProjects/deepfire/data'
+            path = args.data_path
             path = os.path.join(path, artist)
             with open(os.path.join(path, 'lyrics.txt'), mode='r') as f:
                 text = f.read()
@@ -51,7 +56,6 @@ def predict():
 
 
 if __name__ == "__main__":
-    print(("* Loading Keras model and Flask starting server..."
-           "please wait until server has fully started"))
-    get_models(path)
+    print("* Loading Keras models and Flask server")
+    get_models(args.data_path)
     app.run()
